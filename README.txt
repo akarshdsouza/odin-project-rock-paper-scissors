@@ -1,0 +1,1 @@
+This repository is for building a rock-paper-scissors game using Javascript.
