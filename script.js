@@ -7,7 +7,7 @@ function getComputerChoice () {
 function playRound(playerSelection, computerSelection) {
     console.log(`player: ${playerSelection} computer: ${computerSelection}`);
     if (playerSelection === "" || playerSelection === null || playerSelection === undefined) {
-        return (console.log("The input cannot be empty. It can only contain rock, paper or scissors"))
+        return "The input cannot be empty. It can only contain rock, paper or scissors";
     }
     let result = "";
     if ((playerSelection === "rock" && computerSelection === "rock")
@@ -26,7 +26,7 @@ function playRound(playerSelection, computerSelection) {
         result = `${playerSelection} beats ${computerSelection}! Player wins!`; 
     }
     else {
-        return (console.log("The input can only contian rock, paper or scissors"))
+        return "The input can only contian rock, paper or scissors";
     }
     return result;
 }
