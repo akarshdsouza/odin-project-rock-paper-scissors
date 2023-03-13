@@ -4,7 +4,7 @@ function getComputerChoice () {
     return thisTurn;
 }
 
-function nameChoice (number) {
+function chooseName (number) {
     switch(number) {
         case 0:
             return "Rock";
@@ -37,14 +37,14 @@ function playRound (player, computer) {
     return [compWin, playerWin];
 }
 
-function game () {
+function playGame () {
     let playerWinCount = 0;
     let compWinCount = 0;
     for (let i = 0; i < 5; i++) {
         let playerChoice = Number(prompt("Rock (0), Paper (1) or Scissors (2)?:"));
         let computerChoice = getComputerChoice();
-        const playerHand = nameChoice(playerChoice);
-        const compHand = nameChoice(computerChoice);
+        const playerHand = chooseName(playerChoice);
+        const compHand = chooseName(computerChoice);
         let [compWin, playerWin] = playRound(playerChoice, computerChoice);
         console.log(`Player: ${playerHand}; Computer: ${compHand}`);
         if(!playerWin && !compWin) {
@@ -59,6 +59,11 @@ function game () {
             playerWinCount++;
         }
     }
+    return [playerWinCount, compWinCount];
+}
+
+function declareWinner () {
+    let[playerWinCount, compWinCount] = playGame(); 
     if (playerWinCount === compWinCount) {
         console.log(`Player: ${playerWinCount}; Computer: ${compWinCount}
         The game is a tie!`);
@@ -73,4 +78,4 @@ function game () {
     }
 }
 
-game();
+declareWinner();
