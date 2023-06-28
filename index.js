@@ -1,3 +1,37 @@
+const roundResult = document.getElementById('roundResult');
+const playerChoice = document.getElementById('playerChoice');
+const computerChoice = document.getElementById('computerChoice');
+const playerScore = document.getElementById('playerScore');
+const computerScore = document.getElementById('computerScore');
+const rockBtn = document.getElementById('rockBtn');
+const paperBtn = document.getElementById('paperBtn');
+const scissorsBtn = document.getElementById('scissorsBtn');
+const restartBtn = document.getElementById('restartBtn');
+
+if (rockBtn) {
+    rockBtn.addEventListener("click", () => {
+        let playerChoice = 0;
+        let computerChoice = getComputerChoice();
+        playGame(playerChoice,computerChoice);
+    })
+}
+
+if (paperBtn) {
+    paperBtn.addEventListener("click", () => {
+        let playerChoice = 1;
+        let computerChoice = getComputerChoice();
+        playGame(playerChoice,computerChoice);
+    })
+}
+
+if (scissorsBtn) {
+    scissorsBtn.addEventListener("click", () => {
+        let playerChoice = 2;
+        let computerChoice = getComputerChoice();
+        playGame(playerChoice,computerChoice);
+    })
+}
+
 function getComputerChoice () {
     let computerChoice = [0, 1, 2];
     let thisTurn = Math.floor(Math.random() * computerChoice.length);
@@ -20,62 +54,45 @@ function chooseName (number) {
     }
 }
 
-function playRound (player, computer) {
+function playGame (player, computer) {
     let compWin = false;
     let playerWin = false;
+    let compScore = 0;
+    let playerScore = 0;
+    let playerChoice = chooseName(player);
+    let computerChoice = chooseName(computer);
     if (player === computer) {
         playerWin = compWin = false //`Both the players have played ${playerHand}! It's a tie`;
+        console.log(`Both the players have played ${playerChoice}! It's a tie`);
     }
     else if ((player === 0 && computer === 1)
     || (player === 1 && computer === 2)
     || (player === 2 && computer === 0)) {
         compWin = true; //`${compHand} beats ${playerHand}. Computer wins!`;
+        console.log(`${computerChoice} beats ${playerChoice}. Computer wins!`);
+        compScore++;
     }
     else {
        playerWin = true; //`${playerHand} beats ${compHand}. Player wins!`;
+       console.log(`${playerChoice} beats ${computerChoice}. Player wins!`);
+       playerScore++;
     }
-    return [compWin, playerWin];
-}
 
-function playGame () {
-    let playerWinCount = 0;
-    let compWinCount = 0;
-    for (let i = 0; i < 5; i++) {
-        let playerChoice = Number(prompt("Rock (0), Paper (1) or Scissors (2)?:"));
-        let computerChoice = getComputerChoice();
-        const playerHand = chooseName(playerChoice);
-        const compHand = chooseName(computerChoice);
-        let [compWin, playerWin] = playRound(playerChoice, computerChoice);
-        console.log(`Player: ${playerHand}; Computer: ${compHand}`);
-        if(!playerWin && !compWin) {
-            console.log(`Both the players have played ${playerHand}! This round is a tie`);
-        }
-        else if (compWin) {
-           console.log(`${compHand} beats ${playerHand}. Computer wins this round!`);
-           compWinCount++;
-        }
-        else {
-            console.log(`${playerHand} beats ${compHand}. Player wins this round!`);
-            playerWinCount++;
-        }
+    console.log(`Player: ${playerChoice}; Computer: ${computerChoice}`);
+    if(!playerWin && !compWin) {
+        console.log(`Both the players have played ${playerChoice}! This round is a tie`);
     }
-    return [playerWinCount, compWinCount];
-}
-
-function declareWinner () {
-    let[playerWinCount, compWinCount] = playGame(); 
-    if (playerWinCount === compWinCount) {
-        console.log(`Player: ${playerWinCount}; Computer: ${compWinCount}
-        The game is a tie!`);
-    }
-    else if (compWinCount > playerWinCount) {
-        console.log(`Player: ${playerWinCount}; Computer: ${compWinCount}
-        Computer wins the game!`)
+    else if (compWin) {
+       console.log(`${computerChoice} beats ${playerChoice}. Computer wins this round!`);
     }
     else {
-        console.log(`Player: ${playerWinCount}; Computer: ${compWinCount}
-        Player wins the game!`)
+        console.log(`${playerChoice} beats ${computerChoice}. Player wins this round!`);
     }
 }
 
-declareWinner();
+function endGame(playerScore, computerScore) {
+    if (playerScore === 5 | computerScore === 5) {
+        window.alert("This game has ended. Please click on the restart button to start a new game.")
+    }
+    return;
+}
