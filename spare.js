@@ -7,6 +7,26 @@ const playerScore = document.getElementById('playerScore')
 const computerScore = document.getElementById('computerScore')
 const roundResult = document.getElementById('roundResult')
 
+window.addEventListener('DOMContentLoaded', function () {
+    rockBtn.addEventListener('click', function choices () {
+        let playerChoice = 0;
+        let computerChoice = getComputerChoice();
+        playGame(playerChoice, computerChoice);
+    })
+    
+    paperBtn.addEventListener('click', function choices () {
+        let playerChoice = 1;
+        let computerChoice = getComputerChoice();
+        playGame(playerChoice, computerChoice);
+    })
+    
+    scissorsBtn.addEventListener('click', function choices () {
+        let playerChoice = 2;
+        let computerChoice = getComputerChoice();
+        playGame(playerChoice, computerChoice);
+    })
+})
+
 function getComputerChoice () {
     let computerChoice = [0, 1, 2];
     let thisTurn = Math.floor(Math.random() * computerChoice.length);
@@ -29,26 +49,6 @@ function nameChoices (choice) {
     }
 }
 
-window.addEventListener('DOMContentLoaded', function () {
-    rockBtn.addEventListener('click', function choices () {
-        let playerChoice = 0;
-        let computerChoice = getComputerChoice();
-        playGame(playerChoice, computerChoice);
-    })
-    
-    paperBtn.addEventListener('click', function choices () {
-        let playerChoice = 1;
-        let computerChoice = getComputerChoice();
-        playGame(playerChoice, computerChoice);
-    })
-    
-    scissorsBtn.addEventListener('click', function choices () {
-        let playerChoice = 2;
-        let computerChoice = getComputerChoice();
-        playGame(playerChoice, computerChoice);
-    })
-})
-
 function playGame (player, computer) {
     let playerWin = 0;
     let compWin = 0;
@@ -59,7 +59,6 @@ function playGame (player, computer) {
     if (player === computer) {
         round++;
         roundResult.textContent = (`Both players have played ${playerChoice}! It is a tie!`);
-        
         return;
     }
     else if ((player === 0 && computer === 1)
