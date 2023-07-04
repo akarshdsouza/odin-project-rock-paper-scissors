@@ -1,36 +1,52 @@
-const roundResult = document.getElementById('roundResult');
-const playerChoice = document.getElementById('playerChoice');
-const computerChoice = document.getElementById('computerChoice');
-const playerScore = document.getElementById('playerScore');
-const computerScore = document.getElementById('computerScore');
-const rockBtn = document.getElementById('rockBtn');
-const paperBtn = document.getElementById('paperBtn');
-const scissorsBtn = document.getElementById('scissorsBtn');
-const restartBtn = document.getElementById('restartBtn');
+const rockBtn = document.getElementById('rockBtn')
+const paperBtn = document.getElementById('paperBtn')
+const scissorsBtn = document.getElementById('scissorsBtn')
+const playerChoice = document.getElementById('playerChoice')
+const computerChoice = document.getElementById('computerChoice')
+const playerScore = document.getElementById('playerScore')
+const computerScore = document.getElementById('computerScore')
+const roundResult = document.getElementById('roundResult')
 
-if (rockBtn) {
-    rockBtn.addEventListener("click", () => {
+window.addEventListener('DOMContentLoaded', function () {
+    rockBtn.addEventListener('click', function choices () {
         let playerChoice = 0;
         let computerChoice = getComputerChoice();
-        playGame(playerChoice,computerChoice);
+        playRound(playerChoice, computerChoice);
     })
-}
-
-if (paperBtn) {
-    paperBtn.addEventListener("click", () => {
+    
+    paperBtn.addEventListener('click', function choices () {
         let playerChoice = 1;
         let computerChoice = getComputerChoice();
-        playGame(playerChoice,computerChoice);
+        playRound(playerChoice, computerChoice);
     })
-}
-
-if (scissorsBtn) {
-    scissorsBtn.addEventListener("click", () => {
+    
+    scissorsBtn.addEventListener('click', function choices () {
         let playerChoice = 2;
         let computerChoice = getComputerChoice();
-        playGame(playerChoice,computerChoice);
+        playRound(playerChoice, computerChoice);
     })
-}
+
+    restartBtn.disabled = true;
+
+    restartBtn.addEventListener('click', function restartGame() {
+        playerWin = 0;
+        compWin = 0;
+        round = 0;
+        rockBtn.disabled = false;
+        paperBtn.disabled = false;
+        scissorsBtn.disabled = false;
+        restartBtn.disabled = true;
+        roundResult.textContent = "The first player to reach 5 points, wins!";
+        playerScore.textContent = "0";
+        computerScore.textContent = "0";
+        playerChoice.textContent = "?";
+        computerChoice.textContent = "?";
+    });
+})
+
+let playerWin = 0;
+let compWin = 0;
+let round = 0;
 
 function getComputerChoice () {
     let computerChoice = [0, 1, 2];
@@ -38,8 +54,8 @@ function getComputerChoice () {
     return thisTurn;
 }
 
-function chooseName (number) {
-    switch(number) {
+function nameChoices (choice) {
+    switch(choice) {
         case 0:
             return "Rock";
             break;
@@ -54,45 +70,55 @@ function chooseName (number) {
     }
 }
 
-function playGame (player, computer) {
-    let compWin = false;
-    let playerWin = false;
-    let compScore = 0;
-    let playerScore = 0;
-    let playerChoice = chooseName(player);
-    let computerChoice = chooseName(computer);
+function playRound (player, computer) {
+    let playerChoice = nameChoices(player);
+    let computerChoice = nameChoices(computer);
     if (player === computer) {
-        playerWin = compWin = false //`Both the players have played ${playerHand}! It's a tie`;
-        console.log(`Both the players have played ${playerChoice}! It's a tie`);
+        round++;
+        roundResult.textContent = (`Both players have played ${playerChoice}! It is a tie!`);
     }
     else if ((player === 0 && computer === 1)
     || (player === 1 && computer === 2)
     || (player === 2 && computer === 0)) {
-        compWin = true; //`${compHand} beats ${playerHand}. Computer wins!`;
-        console.log(`${computerChoice} beats ${playerChoice}. Computer wins!`);
-        compScore++;
+        round++;
+        compWin++;
+        roundResult.textContent = (`${computerChoice} beats ${playerChoice}! Computer Wins!`);
     }
-    else {
-       playerWin = true; //`${playerHand} beats ${compHand}. Player wins!`;
-       console.log(`${playerChoice} beats ${computerChoice}. Player wins!`);
-       playerScore++;
+    else if ((computer === 0 && player === 1)
+    || (computer === 1 && player === 2)
+    || (computer === 2 && player === 0)) {
+        round++;
+        playerWin++;
+        roundResult.textContent = (`${playerChoice} beats ${computerChoice}! You win!`);
     }
-
-    console.log(`Player: ${playerChoice}; Computer: ${computerChoice}`);
-    if(!playerWin && !compWin) {
-        console.log(`Both the players have played ${playerChoice}! This round is a tie`);
-    }
-    else if (compWin) {
-       console.log(`${computerChoice} beats ${playerChoice}. Computer wins this round!`);
-    }
-    else {
-        console.log(`${playerChoice} beats ${computerChoice}. Player wins this round!`);
-    }
+    updateScores(playerChoice, computerChoice);
+    endGame();
 }
 
-function endGame(playerScore, computerScore) {
-    if (playerScore === 5 | computerScore === 5) {
-        window.alert("This game has ended. Please click on the restart button to start a new game.")
+function endGame() {
+    if ((playerWin === 5) || (compWin === 5)) {
+        alert(`${round} rounds played and...`)
+        if(playerWin > compWin) {
+            alert("The game has ended. You WON!!")
+        }
+        else {
+            alert("The game has ended. You lost! :(")
+        }
+        alert("Please click the restart button on the page to restart a new game.")
+        rockBtn.disabled = true;
+        paperBtn.disabled = true;
+        scissorsBtn.disabled = true;
+        restartBtn.disabled = false;
+        return;
     }
-    return;
+    else {
+        return;
+    }   
+}
+
+function updateScores(player, computer) {
+    playerChoice.textContent = (`${player}`);
+    computerChoice.textContent = (`${computer}`);
+    playerScore.textContent = (`${playerWin}`);
+    computerScore.textContent = (`${compWin}`);
 }
